@@ -80,7 +80,7 @@ class WebViewViewModel extends GetxController {
         Future.delayed(const Duration(seconds: 2), () {
           auth.dopost();
         });
-        // auth.dopost();
+        auth.dopost();
       },
     );
   }

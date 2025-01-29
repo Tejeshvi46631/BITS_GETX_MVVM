@@ -31,3 +31,8 @@ class InvalidUrlException extends AppException {
 class FetchdataException extends AppException {
   FetchdataException([String? message]) : super(message, 'Not able to fetch data');
 }
+
+
+class UbinnotSold extends AppException {
+  UbinnotSold([String? message]) : super(message, 'UBIN Status is Not Sold!! ');
+}

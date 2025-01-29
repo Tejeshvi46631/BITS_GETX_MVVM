@@ -14,4 +14,6 @@ class AppColors {
   static const Color bule = Colors.blue;
   // Custom colors
   static const Color customBlack = Color(0xFF000000); // Custom black color
+  static const Color Warning = Color.fromARGB(255, 178, 234, 36);
+  static const Color buttonColor = Color.fromARGB(255, 117, 117, 228);
 }

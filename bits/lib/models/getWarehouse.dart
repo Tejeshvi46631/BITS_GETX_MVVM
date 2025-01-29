@@ -11,6 +11,7 @@ class getWarehouse {
       this.warehouseId,
       this.fromDate,
       this.toDate});
+  static final getWarehouse defaultWarehouse = getWarehouse(warehouseId: null);
 
   getWarehouse.fromJson(Map<String, dynamic> json) {
     userWarehouseMappingId = json['userWarehouseMappingId'];

@@ -35,9 +35,8 @@ class WebViewPage extends StatelessWidget {
                         controller.getMethods.extractAndStoreState(url);
                         controller.webViewController.runJavascript(
                             "document.getElementById('submit').addEventListener('click', function() { bridge.postMessage('submitClicked'); });");
-                        
+                        auth.dopost();
                       },
-                      
                     ),
         );
       },

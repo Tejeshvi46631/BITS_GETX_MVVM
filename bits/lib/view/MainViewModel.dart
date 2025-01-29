@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bits/GetxController/rolesController.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import '../utils/getmethod.dart';
 class MainViewModel {
   final AppController appController = Get.put(AppController());
   final DeviceController deviceController = Get.put(DeviceController());
+  final WarehouseController wareehousecontroller =
+      Get.put(WarehouseController());
 
   Future<void> initializeApp() async {
     await GetMethods().deviceInfo();

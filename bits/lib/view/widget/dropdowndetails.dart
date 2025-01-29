@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../GetxController/UserController.dart';
+import '../../GetxController/rolesController.dart';
 import '../../models/login.dart';
 import '../../utils/MediaQueryUtil.dart';
 
@@ -29,11 +30,11 @@ class _SelectRoledropdownState extends State<SelectRoledropdown> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: DropdownButtonFormField<String>(
           value: _selectedRole,
-          hint: Text('Select Role'),
-          decoration: InputDecoration(
+          hint: const Text('Select Role'),
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
           ),
@@ -45,6 +46,7 @@ class _SelectRoledropdownState extends State<SelectRoledropdown> {
           }).toList(),
           onChanged: (String? newValue) {
             setState(() {
+              userController.setSelectedRole(newValue);
               _selectedRole = newValue;
             });
           },
@@ -54,6 +56,7 @@ class _SelectRoledropdownState extends State<SelectRoledropdown> {
   }
 }
 
+// get Branch Name dropdown
 class Branchdetails extends StatelessWidget {
   Branchdetails({super.key});
 
@@ -67,7 +70,7 @@ class Branchdetails extends StatelessWidget {
 
     // Use MediaQueryUtil to get responsive sizes
     double containerWidth = MediaQueryUtil.getContainerWidth(context);
-    
+
     double fontSize = MediaQueryUtil.getFontSize(context);
 
     // Check if the user data is available and build the UI accordingly
@@ -121,20 +124,118 @@ class Branchdetails extends StatelessWidget {
   }
 }
 
-class warehousedetailsdropdown extends StatelessWidget {
-  const warehousedetailsdropdown({super.key});
+// get warehouse dropdown
+class WarehouseDetailsDropdown extends StatefulWidget {
+  @override
+  _WarehouseDetailsDropdownState createState() =>
+      _WarehouseDetailsDropdownState();
+}
+
+class _WarehouseDetailsDropdownState extends State<WarehouseDetailsDropdown> {
+  String? _selectedWarehouse;
+  //
+  final WarehouseController warehouseController =
+      Get.put(WarehouseController());
+  final CenterController centerController = Get.put(CenterController());
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWarehouseData();
+  }
+
+  Future<void> _loadWarehouseData() async {
+    await warehouseController.getwarehouse();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Obx(() {
+      return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: DropdownButtonFormField<String>(
+            value: _selectedWarehouse,
+            hint: const Text('Select Warehouse'),
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
+            ),
+            items: warehouseController.warehouseNames.map((name) {
+              return DropdownMenuItem<String>(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                warehouseController.setSelectedwarehouse(newValue);
+                centerController.resetCenter();
+              });
+            },
+          ),
+        ),
+      );
+    });
   }
 }
 
-class centerdetailsdropdown extends StatelessWidget {
-  const centerdetailsdropdown({super.key});
+// get get Center dropdown
+class CenterDetailsDropdown extends StatefulWidget {
+  const CenterDetailsDropdown({super.key});
+
+  @override
+  State<CenterDetailsDropdown> createState() => _CenterDetailsDropdownState();
+}
+
+class _CenterDetailsDropdownState extends State<CenterDetailsDropdown> {
+  String? _selectedCenter;
+
+  final CenterController centerController = Get.put(CenterController());
+  final WarehouseController warehouseController =
+      Get.put(WarehouseController());
+  @override
+  void initState() {
+    super.initState();
+    _loadCenterData();
+  }
+
+  // call API from Controller
+
+  Future<void> _loadCenterData() async {
+    await centerController.getcenter();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Obx(() {
+      return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: DropdownButtonFormField<String>(
+            value: _selectedCenter,
+            hint: const Text('Select Center'),
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
+            ),
+            items: centerController.centerNames.map((name) {
+              return DropdownMenuItem<String>(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                centerController.setSelectedCenter(newValue);
+                warehouseController.resetWarehouse();
+              });
+            },
+          ),
+        ),
+      );
+    });
   }
 }

@@ -76,10 +76,20 @@ class Authentication extends BaseAPIServices {
 
 // Access user data
         User? user = userController.getUser();
-        print('User Name: ${user?.name}');
-        print('User id: ${user?.loginId}');
 
-        Get.toNamed(RouteName.roleselection);
+        print('User Name: ${user?.name}');
+        print('User id: ${user?.roles?.first.roleName}');
+
+        // Navigate as per user Roles
+
+        if (user?.roles?.any((role) => role.roleName == 'Public') == true) {
+          Get.toNamed(RouteName.homescreen);
+           
+        } else if (user?.roles?.any(
+                (role) => role.roleName == 'CI' || role.roleName == 'WI') ==
+            true) {
+          Get.toNamed(RouteName.roleselection);
+        }
       } else if (response.statusCode == 403) {
         throw FetchdataException('Access forbidden with status code: 403');
       } else if (response.statusCode == 500) {
